@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "AWS CloudFormation template to create an S3 bucket with versioning enabled"
+Description: "AWS CloudFormation template to create an S3 bucket and an EC2 instance"
 
 Metadata:
   Author: "vipun sanjna"
-  Version: "1.0"
-  Purpose: "Create an S3 bucket with versioning enabled and a lifecycle policy to delete old versions after 30 days"
+  Version: "1.1"
+  Purpose: "Create an S3 bucket with versioning and a basic EC2 instance"
 
 Parameters:
   BucketName:
@@ -23,6 +23,15 @@ Resources:
       VersioningConfiguration:
         Status: "Enabled"
 
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-0c02fb55956c7d316  
+      InstanceType: t2.micro
+      Tags:
+        - Key: Name
+          Value: "MyEC2Instance"
+
 Outputs:
   BucketName:
     Description: "The name of the created S3 bucket"
@@ -35,3 +44,7 @@ Outputs:
   BucketDomainName:
     Description: "The domain name of the created S3 bucket"
     Value: !GetAtt MyS3Bucket.DomainName
+
+  EC2InstanceId:
+    Description: "The ID of the created EC2 instance"
+    Value: !Ref MyEC2Instance
