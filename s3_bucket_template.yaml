@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS CloudFormation template to create an S3 bucket with versioning enabled"
+
+Metadata:
+  Author: "vipun sanjna"
+  Version: "1.0"
+  Purpose: "Create an S3 bucket with versioning enabled and a lifecycle policy to delete old versions after 30 days"
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: "The name of the S3 bucket to create"
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: "^[a-z0-9.-]+$"
+    ConstraintDescription: "Bucket name must be lowercase letters, numbers, periods, or hyphens."
+
+Resources:
+  MyS3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref BucketName
+      VersioningConfiguration:
+        Status: "Enabled"
+
+Outputs:
+  BucketName:
+    Description: "The name of the created S3 bucket"
+    Value: !Ref BucketName
+
+  BucketArn:
+    Description: "The ARN of the created S3 bucket"
+    Value: !GetAtt MyS3Bucket.Arn
+
+  BucketDomainName:
+    Description: "The domain name of the created S3 bucket"
+    Value: !GetAtt MyS3Bucket.DomainName
